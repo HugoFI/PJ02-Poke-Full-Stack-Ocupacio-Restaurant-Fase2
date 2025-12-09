@@ -3,7 +3,7 @@
 $srv_name = "localhost";
 $db_username = "root";
 $db_passwd = "";
-$db_name = "bd_pokefullStack";
+$db_name = "bd_pokefullStack_fase2";
 
 
 try {

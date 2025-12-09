@@ -3,7 +3,7 @@ session_start();
 require_once '../database/conexion.php'; // Ajusta la ruta si es distinta
 
 // Verificar sesión
-if (!isset($_SESSION['idCamarero'])) {
+if (!isset($_SESSION['idUsuario'])) {
     header('Location: ./login.php?error=SesionExpirada');
     exit;
 }
@@ -41,7 +41,7 @@ try {
             h.horaOcupacion,
             h.horaDesocupacion
         FROM historico h
-        INNER JOIN camarero c ON h.idCamarero = c.idCamarero
+        INNER JOIN usuarios c ON h.idUsuario = c.idUsuario
         WHERE h.idMesa = :idMesa
         ORDER BY h.idHistorico DESC
     ";

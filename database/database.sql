@@ -1,10 +1,10 @@
-DROP DATABASE IF EXISTS bd_pokefullStack;
-CREATE DATABASE bd_pokefullStack;
+DROP DATABASE IF EXISTS bd_pokefullStack_fase2;
+CREATE DATABASE bd_pokefullStack_fase2;
 
-USE bd_pokefullStack;
+USE bd_pokefullStack_fase2;
 
-CREATE TABLE camarero(
-    idCamarero INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+CREATE TABLE usuarios(
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     nombre VARCHAR(60) NOT NULL,
     apellidos VARCHAR(80) NOT NULL,
     nombreUsu VARCHAR(60) NOT NULL,
@@ -12,19 +12,21 @@ CREATE TABLE camarero(
     telefono VARCHAR(10) NOT NULL,
     email VARCHAR(60) NOT NULL,
     fechaContratacion DATE NOT NULL,
+    rol ENUM('admin','gerente', 'mantenimiento','camarero') NOT NULL,
     password VARCHAR(60) NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE sala(
     idSala INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    nombre VARCHAR(60) NOT NULL
+    nombre VARCHAR(60) NOT NULL,
+    tipo ENUM('comedor','terraza','sala privada') NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE mesa(
     idMesa INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     nombre VARCHAR(60) NOT NULL,
     numSillas INT NOT NULL,
-    estado ENUM('libre','ocupada') NOT NULL,
+    estado ENUM('libre','ocupada', 'reservada') NOT NULL,
     idSala INT NOT NULL
 ) ENGINE=InnoDB;
 
@@ -32,7 +34,7 @@ CREATE TABLE historico(
     idHistorico INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     idMesa INT NOT NULL,
     idSala INT NOT NULL,
-    idCamarero INT NOT NULL,
+    idUsuario INT NOT NULL,
     horaOcupacion DATETIME NOT NULL,
     horaDesocupacion DATETIME DEFAULT NULL
 ) ENGINE=InnoDB;
@@ -42,8 +44,8 @@ add constraint fk_mesa_historico
 foreign key (idMesa) references mesa(idMesa);
 
 alter table historico
-add constraint fk_camarero_historico
-foreign key (idCamarero) references camarero(idCamarero);
+add constraint fk_usuario_historico
+foreign key (idUsuario) references usuarios(idUsuario);
 
 alter table historico
 add constraint fk_sala_historico
@@ -54,15 +56,15 @@ add constraint fk_sala_mesa
 foreign key (idSala) references sala(idSala);
 
 
-insert into sala (nombre) values("kanto");
-insert into sala (nombre) values("jotho");
-insert into sala (nombre) values("hoenn");
-insert into sala (nombre) values("sinnoh");
-insert into sala (nombre) values("unova");
-insert into sala (nombre) values("kalos");
-insert into sala (nombre) values("alola");
-insert into sala (nombre) values("galar");
-insert into sala (nombre) values("paldea");
+insert into sala (nombre, tipo) values("sinnoh", "comedor");
+insert into sala (nombre, tipo) values("unova", "comedor");
+insert into sala (nombre, tipo) values("kanto", "terraza");
+insert into sala (nombre, tipo) values("jotho", "terraza");
+insert into sala (nombre, tipo) values("hoenn", "terraza");
+insert into sala (nombre, tipo) values("alola", "sala privada");
+insert into sala (nombre, tipo) values("galar", "sala privada");
+insert into sala (nombre, tipo) values("kalos", "sala privada");
+insert into sala (nombre, tipo) values("paldea", "sala privada");
 
 -- Kanto
 insert into mesa (nombre, numSillas, estado, idSala) values("PLATEADA", 2, "libre", 1);

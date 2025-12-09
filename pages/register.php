@@ -21,8 +21,8 @@ include '../database/conexion.php';
                 <img src="../img/Logo_Pokefull.png" alt="logo">
             </div>
 
-            <form class="form-registro" action="../processes/registrar_camarero.php" method="post">
-                <div id="heading-registro">REGISTRO CAMARERO</div>
+            <form class="form-registro" action="../processes/registrar_usuario.php" method="post">
+                <div id="heading-registro">REGISTRO usuarios</div>
 
                 <!-- GRID DE DOS COLUMNAS -->
                 <div class="registro-grid">
@@ -84,9 +84,31 @@ include '../database/conexion.php';
                     </div>
 
                     <div class="form-group">
+                        <label class="label-registro" for="rol">Rol de usuario</label>
+                        <div class="field-registro">
+                            <select name="rol" id="rol">
+                                <option value="" disabled selected>Selecciona rol de usuario</option>
+                                <option value="admin">Admin</option>
+                                <option value="gerente">Gerente</option>
+                                <option value="mantenimiento">Mantenimiento</option>
+                                <option value="camarero">Camarero</option>
+                            </select>
+                        </div>
+                        <p id="rolError"></p>
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="label-registro" for="password">Contraseña</label>
                         <div class="field-registro">
                             <input class="input-field-registro" type="password" name="password" id="password" placeholder="Contraseña">
+                        </div>
+                        <p id="passwordError"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label-registro" for="confirma-password">Confirma contraseña</label>
+                        <div class="field-registro">
+                            <input class="input-field-registro" type="password" name="confirma-password" id="confirma-password" placeholder="Confirma contraseña">
                         </div>
                         <p id="passwordError"></p>
                     </div>

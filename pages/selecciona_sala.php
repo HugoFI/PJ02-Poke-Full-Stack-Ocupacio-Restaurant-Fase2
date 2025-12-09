@@ -6,7 +6,30 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php?error=NoSesion");
     exit();
 }
+
+require_once './../database/conexion.php';
+$stmt = $conn->query("SELECT idSala, nombre, tipo FROM sala");
+$salas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$salasComedor = [];
+$salasTerraza = [];
+$salasPrivada = [];
+if ($salas && is_array($salas)) {
+  foreach ($salas as $sala) {
+    switch ($sala['tipo']) {
+      case 'comedor':
+        $salasComedor[] = $sala;
+        break;
+      case 'terraza':
+        $salasTerraza[] = $sala;
+        break;
+      case 'sala privada':
+        $salasPrivada[] = $sala;
+        break;
+    }
+  }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -33,21 +56,31 @@ if (!isset($_SESSION['username'])) {
     </form>
   </header>
 
-  <main class="contenedor-selector-sala">
-    <div class="contenedor-selector-sala">
-      <!-- Comedor -->
-      <a href="./salas/comedores/sinnoh.php" class="boton-sala" id="boton-sala1">
-      </a>
+  <!-- <main class="contenedor-selector-sala"> -->
+    <div class="contenedor-sala">
+      <!-- Comedores -->
+      <h1>Comedores</h1>
+      <?php foreach ($salasComedor as $sala): ?>
+        <a href="./sala.php?id=<?php echo $sala['idSala']; ?>" class="boton-sala" id="boton-comedor"></a>
+        <?php endforeach; ?>
+    </div>
 
-      <!-- Terraza -->
-      <a href="./salas/terrazas/kanto.php" class="boton-sala" id="boton-sala2">
-      </a>
+    <div class="contenedor-sala">
+      <!-- Terrazas -->
+      <h1>Terrazas</h1>
+      <?php foreach ($salasTerraza as $sala): ?>
+        <a href="./sala.php?id=<?php echo $sala['idSala']; ?>" class="boton-sala" id="boton-terraza"></a>
+        <?php endforeach; ?>
+    </div>
 
-      <!-- Sala privada -->
-      <a href="./salas/salas_privadas/Alola.php" class="boton-sala" id="boton-sala3">
-      </a>
-    </div>  
-  </main>
+    <div class="contenedor-sala">
+      <!-- Salas privadas -->
+      <h1>Salas Privadas</h1>
+      <?php foreach ($salasPrivada as $sala): ?>
+        <a href="./sala.php?id=<?php echo $sala['idSala']; ?>" class="boton-sala" id="boton-sala-privada"></a>
+      <?php endforeach; ?>
+    </div>
+  <!-- </main> -->
 
   <footer>
     <span>Pokéfull Stack &copy; 2025</span>

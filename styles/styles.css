@@ -281,7 +281,7 @@ footer {
   text-decoration: none;
 }
 
-#boton-sala1 {
+#boton-comedor {
   /* background-color: #ff0000; */
   background-image: url(./../img/Logo_Comedor.png);
   background-repeat: no-repeat;
@@ -289,11 +289,11 @@ footer {
   background-size: contain;
 }
 
-#boton-sala1:hover {
+#boton-comedor:hover {
   box-shadow: 0px 0px 50px 1px rgba(255, 0, 0, 0.8);
 }
 
-#boton-sala2 {
+#boton-terraza {
   /* background-color: #53d56dff; */
   background-image: url(./../img/Logo_Terraza.png);
   background-repeat: no-repeat;
@@ -301,10 +301,10 @@ footer {
   background-size: contain;
 }
 
-#boton-sala2:hover {
+#boton-terraza:hover {
   box-shadow: 0px 0px 50px 1px rgba(0, 255, 0, 0.8);
 }
-#boton-sala3 {
+#boton-sala-privada {
   /* background-color: #fff200; */
   background-image: url(./../img/Logo_SalaPrivada.png);
   background-repeat: no-repeat;
@@ -312,7 +312,7 @@ footer {
   background-size: contain;
 }
 
-#boton-sala3:hover {
+#boton-sala-privada:hover {
   box-shadow: 0px 0px 50px 1px rgba(255, 255, 0, 0.8);
 }
 
@@ -415,6 +415,11 @@ footer {
   font-size: 0.75em;
 }
 
+.input-field-registro::selection {
+  color: #666;
+  font-size: 0.75em;
+}
+
 
 .btn-registro {
   display: flex;
@@ -466,6 +471,12 @@ footer {
     flex-direction: column;
     gap: 25px;
     padding: 0 20px;
+  }
+
+  .contenedor-sala{
+    flex-direction: flex;
+    gap: 20px;
+    padding: 0 15px;
   }
 
   .boton-sala {

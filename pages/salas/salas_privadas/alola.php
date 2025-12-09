@@ -6,9 +6,9 @@ require_once '../../../database/conexion.php';
 // --- 1. CAMBIAR ESTADO ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idMesa'])) {
     $idMesa = intval($_POST['idMesa']);
-    $idCamarero = $_SESSION['idCamarero'] ?? null;
+    $idUsuario = $_SESSION['idUsuario'] ?? null;
 
-    if (!$idCamarero) {
+    if (!$idUsuario) {
         header('Location: ../../login.php?error=SesionExpirada');
         exit;
     }
@@ -28,13 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idMesa'])) {
 
                 // Insertar registro en historico (CORREGIDO)
                 $insertHist = $conn->prepare("
-                    INSERT INTO historico (idMesa, idSala, idCamarero, horaOcupacion, horaDesocupacion)
-                    VALUES (:idMesa, :idSala, :idCamarero, NOW(), NULL)
+                    INSERT INTO historico (idMesa, idSala, idUsuario, horaOcupacion, horaDesocupacion)
+                    VALUES (:idMesa, :idSala, :idUsuario, NOW(), NULL)
                 ");
                 $insertHist->execute([
                     ':idMesa' => $idMesa,
                     ':idSala' => 7,
-                    ':idCamarero' => $idCamarero
+                    ':idUsuario' => $idUsuario
                 ]);
 
             } else {
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idMesa'])) {
                 
                 // Buscar el último registro histórico sin horaDesocupacion (CORREGIDO)
                 $stmtHist = $conn->prepare("
-                    SELECT idCamarero 
+                    SELECT idUsuario 
                     FROM historico 
                     WHERE idMesa = :idMesa 
                     AND horaDesocupacion IS NULL
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idMesa'])) {
                 $historico = $stmtHist->fetch(PDO::FETCH_ASSOC);
 
                 // Verificar si el camarero actual es el mismo que ocupó la mesa
-                if (!$historico || $historico['idCamarero'] != $idCamarero) {
+                if (!$historico || $historico['idUsuario'] != $idUsuario) {
                     $_SESSION['error'] = "No puedes liberar esta mesa. Solo el camarero que la ocupó puede liberarla.";
                     header('Location: ./alola.php?select=' . $idMesa);
                     exit;
@@ -128,9 +128,9 @@ try {
 
 // --- 3. MESA SELECCIONADA ---
 $selectedMesa = null;
-$nombreCamareroOcupante = null;
+$nombreUsuarioOcupante = null;
 $puedeLiberar = false;
-$idCamareroOcupante = null;
+$idUsuarioOcupante = null;
 
 if (isset($_GET['select'])) {
     $idSelect = intval($_GET['select']);
@@ -144,9 +144,9 @@ if (isset($_GET['select'])) {
     if ($selectedMesa && $selectedMesa['estado'] === 'ocupada') {
         // Consulta unificada con horaDesocupacion (CORREGIDO)
         $sql = "
-            SELECT c.nombre, c.apellidos, c.idCamarero
+            SELECT c.nombre, c.apellidos, c.idUsuario
             FROM historico h
-            INNER JOIN camarero c ON h.idCamarero = c.idCamarero
+            INNER JOIn usuarios c ON h.idUsuario = c.idUsuario
             WHERE h.idMesa = :idMesa
             AND h.horaDesocupacion IS NULL
             ORDER BY h.idHistorico DESC
@@ -157,10 +157,10 @@ if (isset($_GET['select'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($row) {
-            $nombreCamareroOcupante = $row['nombre'] . ' ' . $row['apellidos'];
-            $idCamareroOcupante = $row['idCamarero'];
+            $nombreUsuarioOcupante = $row['nombre'] . ' ' . $row['apellidos'];
+            $idUsuarioOcupante = $row['idUsuario'];
             // Verificar si el camarero actual puede liberar la mesa
-            $puedeLiberar = ($idCamareroOcupante == $_SESSION['idCamarero']);
+            $puedeLiberar = ($idUsuarioOcupante == $_SESSION['idUsuario']);
         }
     }
 }
@@ -280,11 +280,11 @@ foreach ($mesas as $m) {
             <p><strong>Estado:</strong> <?= ucfirst($selectedMesa['estado']) ?></p>
             <p><strong>Sillas:</strong> <?= intval($selectedMesa['numSillas']) ?></p>
 
-            <?php if ($selectedMesa['estado'] === 'ocupada' && $nombreCamareroOcupante): ?>
-                <p><strong>Ocupada por:</strong> <?= htmlspecialchars($nombreCamareroOcupante) ?></p>
+            <?php if ($selectedMesa['estado'] === 'ocupada' && $nombreUsuarioOcupante): ?>
+                <p><strong>Ocupada por:</strong> <?= htmlspecialchars($nombreUsuarioOcupante) ?></p>
 
                 <?php if (!$puedeLiberar): ?>
-                    <p style="color:#ff6b6b; font-weight:bold;">⚠️ Solo <?= htmlspecialchars($nombreCamareroOcupante) ?> puede liberar esta mesa</p>
+                    <p style="color:#ff6b6b; font-weight:bold;">⚠️ Solo <?= htmlspecialchars($nombreUsuarioOcupante) ?> puede liberar esta mesa</p>
                 <?php endif; ?>
             <?php endif; ?>
 

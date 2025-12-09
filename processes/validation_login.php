@@ -37,7 +37,7 @@ if (filter_has_var(INPUT_POST, 'login')) {
     }
 }
 
-    $sql = "SELECT idCamarero, nombreUsu, password FROM camarero WHERE nombreUsu = :username";
+    $sql = "SELECT idUsuario, nombreUsu, password FROM usuarios WHERE nombreUsu = :username";
     $stmt = $conn->prepare($sql);
     $stmt->execute([':username' => $username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -48,7 +48,7 @@ if (filter_has_var(INPUT_POST, 'login')) {
     }
     // Si las contraseñas están HASHHEADAS 
     if (password_verify($password, $user['password'])) {
-        $_SESSION['idCamarero'] = $user['idCamarero'];
+        $_SESSION['idUsuario'] = $user['idUsuario'];
         $_SESSION['username'] = $user['nombreUsu'];
         header("Location: ../pages/selecciona_sala.php");
     }

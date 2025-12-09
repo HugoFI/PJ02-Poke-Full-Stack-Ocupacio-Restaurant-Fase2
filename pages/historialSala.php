@@ -2,7 +2,7 @@
 session_start();
 require_once '../database/conexion.php';
 
-if (!isset($_SESSION['idCamarero'])) {
+if (!isset($_SESSION['idUsuario'])) {
     header('Location: ../login.php?error=SesionExpirada');
     exit;
 }
@@ -20,7 +20,7 @@ try {
             h.horaDesocupacion
         FROM historico h
         INNER JOIN mesa m ON h.idMesa = m.idMesa
-        INNER JOIN camarero c ON h.idCamarero = c.idCamarero
+        INNER JOIN usuarios c ON h.idUsuario = c.idUsuario
         WHERE m.idSala = :idSala
         ORDER BY h.horaOcupacion DESC, h.idHistorico DESC
     ";
