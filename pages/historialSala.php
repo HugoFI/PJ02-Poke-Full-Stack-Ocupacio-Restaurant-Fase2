@@ -88,24 +88,7 @@ if (isset($salaNombres[$idSala])) {
 <?php endif; ?>
 
 <div class="volver">
-    <?php
-    $urlVolver = './selecciona_sala.php';
-    $salasBack = [
-        1 => './salas/terrazas/kanto.php',
-        2 => './salas/terrazas/johto.php',
-        3 => './salas/terrazas/hoenn.php',
-        4 => './salas/comedores/sinnoh.php',
-        5 => './salas/comedores/unova.php',
-        6 => './salas/salas_privadas/kalos.php',
-        7 => './salas/salas_privadas/alola.php',
-        8 => './salas/salas_privadas/galar.php',
-        9 => './salas/salas_privadas/paldea.php',
-    ];
-    if (isset($salasBack[$idSala])){
-        $urlVolver = $salasBack[$idSala];
-    } 
-    ?>
-    <a href="<?= $urlVolver ?>">← Volver a la sala</a>
+    <a href="sala.php?idSala=<?= $idSala ?>">← Volver a la sala</a>
 </div>
 
 </body>

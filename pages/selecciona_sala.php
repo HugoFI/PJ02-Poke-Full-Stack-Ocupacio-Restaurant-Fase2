@@ -49,8 +49,12 @@ if ($salas && is_array($salas)) {
       </div>
     </div>
 
-    <span>Pokéfull Stack | <?php echo $_SESSION['username'];?></span>
+    <a class="btn-cerrar" href="./crud_recursos.php">Gestión de Recursos</a>
+
+    <span><h2>Pokéfull Stack | <?php echo $_SESSION['username'];?></h2></span>
     
+    <a class="btn-cerrar" href="./crud_usuarios.php">Gestión de Usuarios</a>
+
     <form id="cerrar-sesion" action="./../processes/logout.php" method="post">
       <button type="submit" class="btn-cerrar">Cerrar sesión</button>
     </form>
@@ -61,30 +65,27 @@ if ($salas && is_array($salas)) {
       <!-- Comedores -->
       <h1>Comedores</h1>
       <?php foreach ($salasComedor as $sala): ?>
-        <a href="./sala.php?id=<?php echo $sala['idSala']; ?>" class="boton-sala" id="boton-comedor"></a>
-        <?php endforeach; ?>
+        <a href="./sala.php?idSala=<?php echo $sala['idSala']; ?>" class="boton-sala" id="boton-comedor"><?php echo htmlspecialchars($sala['nombre']); ?></a>
+      <?php endforeach; ?>
     </div>
 
     <div class="contenedor-sala">
       <!-- Terrazas -->
       <h1>Terrazas</h1>
       <?php foreach ($salasTerraza as $sala): ?>
-        <a href="./sala.php?id=<?php echo $sala['idSala']; ?>" class="boton-sala" id="boton-terraza"></a>
-        <?php endforeach; ?>
+        <a href="./sala.php?idSala=<?php echo $sala['idSala']; ?>" class="boton-sala" id="boton-terraza"><?php echo htmlspecialchars($sala['nombre']); ?></a>
+      <?php endforeach; ?>
     </div>
 
     <div class="contenedor-sala">
       <!-- Salas privadas -->
       <h1>Salas Privadas</h1>
       <?php foreach ($salasPrivada as $sala): ?>
-        <a href="./sala.php?id=<?php echo $sala['idSala']; ?>" class="boton-sala" id="boton-sala-privada"></a>
+        <a href="./sala.php?idSala=<?php echo $sala['idSala']; ?>" class="boton-sala" id="boton-sala-privada"><?php echo htmlspecialchars($sala['nombre']); ?></a>
       <?php endforeach; ?>
     </div>
   <!-- </main> -->
 
-  <footer>
-    <span>Pokéfull Stack &copy; 2025</span>
-  </footer>
 <script src="./../js/script.js"></script>
 </body>
 </html>

@@ -8,6 +8,8 @@ if (!isset($_SESSION['idUsuario'])) {
     exit;
 }
 
+$idSala = isset($_GET['idSala']) ? intval($_GET['idSala']) : 0;
+
 // Verificar idMesa
 if (!isset($_GET['idMesa']) || !is_numeric($_GET['idMesa'])) {
     die("ID de mesa no válido.");
@@ -92,46 +94,7 @@ try {
     <?php endif; ?>
 
     <div class="volver">
-        <?php
-        // Detectar sala por parámetro GET
-        $idSala = isset($_GET['idSala']) ? intval($_GET['idSala']) : null;
-        $urlVolver = './selecciona_sala.php';
-        if ($idSala) {
-            switch ($idSala) {
-                case 1:
-                    $urlVolver = './salas/terrazas/kanto.php';
-                    break;
-                case 2:
-                    $urlVolver = './salas/terrazas/johto.php';
-                    break;
-                case 3:
-                    $urlVolver = './salas/terrazas/hoenn.php';
-                    break;
-                case 4:
-                    $urlVolver = './salas/comedores/sinnoh.php';
-                    break;
-                case 5:
-                    $urlVolver = './salas/comedores/unova.php';
-                    break;
-                case 6:
-                    $urlVolver = './salas/salas_privadas/kalos.php';
-                    break;
-                case 7:
-                    $urlVolver = './salas/salas_privadas/alola.php';
-                    break;
-                case 8:
-                    $urlVolver = './salas/salas_privadas/galar.php';
-                    break;
-                case 9:
-                    $urlVolver = './salas/salas_privadas/paldea.php';
-                    break;
-                default:
-                    $urlVolver = './selecciona_sala.php';
-                    break;
-            }
-        }
-        ?>
-        <a href="<?= $urlVolver ?>">← Volver a la sala</a>
+        <a href="./sala.php?idSala=<?= $idSala ?>">← Volver a la sala</a>
     </div>
 </body>
 </html>

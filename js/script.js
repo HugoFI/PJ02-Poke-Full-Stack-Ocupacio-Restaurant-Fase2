@@ -238,3 +238,25 @@ function sweetalertCerrarSesion() {
         };
     }
 }
+
+function sweetalertEliminarUsuario() {
+    var form = document.getElementById('eliminar-usuario');
+    if (form) {
+        form.onsubmit = function(evento) {
+            evento.preventDefault(); // Previene que se envíe el formulario
+                    if (window.Swal) {
+                    Swal.fire({
+                        text: '¿Seguro que quieres eliminar este usuario?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, eliminar usuario',
+                        cancelButtonText: 'Cancelar'
+                    }).then(function(result) {
+                        if (result.isConfirmed) form.submit();
+                    });
+                } else {
+                    form.submit();
+                }
+        };
+    }
+}
