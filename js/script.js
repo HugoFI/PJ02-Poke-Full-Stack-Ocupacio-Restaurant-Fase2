@@ -27,8 +27,11 @@ window.onload = () => {
     if (pwd) pwd.onblur = validarPassword;
 
     sweetalertEstadoMesa();
-
     sweetalertCerrarSesion();
+    sweetalertEliminarSala();
+    sweetalertEliminarMesa();
+    sweetalertEliminarUsuario();
+    sweetalertConfirmarEdicion();
 }
 
 
@@ -194,8 +197,6 @@ function validarFecha(){
 
 // |||||||||||||||||||||| SWEETALERT2 ||||||||||||||||||||||
 
-// SweetAlert2: pregunta y muestra éxito tras cambiar estado de mesa
-// document.addEventListener('DOMContentLoaded', function() {
 function sweetalertEstadoMesa() {
     var form = document.getElementById('form-cambiar-estado');
     if (form) {
@@ -240,8 +241,8 @@ function sweetalertCerrarSesion() {
 }
 
 function sweetalertEliminarUsuario() {
-    var form = document.getElementById('eliminar-usuario');
-    if (form) {
+    var forms = document.querySelectorAll('form.eliminar-usuario');
+    forms.forEach(function(form) {
         form.onsubmit = function(evento) {
             evento.preventDefault(); // Previene que se envíe el formulario
                     if (window.Swal) {
@@ -258,5 +259,72 @@ function sweetalertEliminarUsuario() {
                     form.submit();
                 }
         };
+    });
+}
+
+function sweetalertEliminarSala() {
+    var forms = document.querySelectorAll('form.eliminar-sala');
+    forms.forEach(function(form) {
+        form.onsubmit = function(evento) {
+            evento.preventDefault();
+            if (window.Swal) {
+                Swal.fire({
+                    text: '¿Seguro que quieres eliminar esta sala?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar sala',
+                    cancelButtonText: 'Cancelar'
+                }).then(function(result) {
+                    if (result.isConfirmed) form.submit();
+                });
+            } else {
+                form.submit();
+            }
+        };
+    });
+}
+
+function sweetalertEliminarMesa() {
+    var forms = document.querySelectorAll('form.eliminar-mesa');
+    forms.forEach(function(form) {
+        form.onsubmit = function(evento) {
+            evento.preventDefault();
+            if (window.Swal) {
+                Swal.fire({
+                    text: '¿Seguro que quieres eliminar esta mesa?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar mesa',
+                    cancelButtonText: 'Cancelar'
+                }).then(function(result) {
+                    if (result.isConfirmed) form.submit();
+                });
+            } else {
+                form.submit();
+            }
+        };
+    });
+}
+
+
+function sweetalertConfirmarEdicion() {
+    var form = document.getElementById('editar-elemento');
+    if (form) {
+        form.onsubmit = function(evento) {
+            evento.preventDefault(); // Previene que se envíe el formulario
+                    if (window.Swal) {
+                    Swal.fire({
+                        text: '¿Seguro que quieres guardar estos cambios?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, guardar cambios',
+                        cancelButtonText: 'Cancelar'
+                    }).then(function(result) {
+                        if (result.isConfirmed) form.submit();
+                    });
+                } else {
+                    form.submit();
+                }
+        };  
     }
 }

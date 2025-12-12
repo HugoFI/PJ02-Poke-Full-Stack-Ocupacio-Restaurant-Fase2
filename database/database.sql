@@ -26,7 +26,7 @@ CREATE TABLE mesa(
     idMesa INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     nombre VARCHAR(60) NOT NULL,
     numSillas INT NOT NULL,
-    estado ENUM('libre','ocupada', 'reservada') NOT NULL,
+    estado ENUM('libre','ocupada', 'reservada', 'mantenimiento') NOT NULL,
     idSala INT NOT NULL
 ) ENGINE=InnoDB;
 
@@ -37,6 +37,15 @@ CREATE TABLE historico(
     idUsuario INT NOT NULL,
     horaOcupacion DATETIME NOT NULL,
     horaDesocupacion DATETIME DEFAULT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE reservas(
+    idReserva INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    idMesa INT NOT NULL,
+    idSala INT NOT NULL,
+    idUsuario INT NOT NULL,
+    fechaHoraReserva DATETIME NOT NULL,
+    numPersonas INT NOT NULL
 ) ENGINE=InnoDB;
 
 alter table historico

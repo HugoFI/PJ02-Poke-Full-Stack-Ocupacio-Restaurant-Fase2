@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('Location: ../index.php');
+    exit;
+}
+
 require_once '../processes/procesar_crud_usuarios.php';
 ?>
 <!DOCTYPE html>
@@ -7,17 +13,18 @@ require_once '../processes/procesar_crud_usuarios.php';
 	<meta charset="UTF-8">
 	<title>CRUD Usuarios</title>
 	<link rel="stylesheet" href="../styles/estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="body-">
 	<header>
-		<span>Pokéfull Stack | Admin</span>
-		<h1>Gestión de Usuarios</h1>
+		<span>Pokéfull Stack | <?php echo $_SESSION['username'];?></span>
+		<h2>Gestión de Usuarios</h2>
 		<a href="selecciona_sala.php" class="btn-cerrar">Volver</a>
 	</header>
 	<main class="contenedor-principal">
 		<div class="">
 			<h2>Usuarios registrados</h2>
-			<table >
+			<table class="crud-table">
 				<thead>
 					<tr>
 						<th>ID</th>
@@ -43,14 +50,16 @@ require_once '../processes/procesar_crud_usuarios.php';
 						<td><?= htmlspecialchars($u['email']) ?></td>
 						<td><?= htmlspecialchars($u['rol']) ?></td>
 						<td>
-							<form method="post" style="display:inline;">
-								<input type="hidden" name="idUsuario" value="<?= $u['idUsuario'] ?>">
-								<button type="submit" name="editar" class="btn btn-link">Editar</button>
-							</form>
-							<form method="post" style="display:inline;">
-								<input type="hidden" name="idUsuario" value="<?= $u['idUsuario'] ?>">
-								<button type="submit" name="eliminar" class="btn btn-link" style="background:#e74c3c; color:#fff;">Eliminar</button>
-							</form>
+							<div class="crud-actions">
+								<form method="post">
+									<input type="hidden" name="idUsuario" value="<?= $u['idUsuario'] ?>">
+									<button type="submit" name="editar" class="btn btn-link btn-editar">Editar</button>
+								</form>
+								<form class="eliminar-usuario" method="post">
+									<input type="hidden" name="idUsuario" value="<?= $u['idUsuario'] ?>">
+									<button type="submit" name="eliminar" class="btn btn-link btn-eliminar">Eliminar</button>
+								</form>
+							</div>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -58,5 +67,6 @@ require_once '../processes/procesar_crud_usuarios.php';
 			</table>
 		</div>
 	</main>
+<script src="./../js/script.js"></script>
 </body>
 </html>

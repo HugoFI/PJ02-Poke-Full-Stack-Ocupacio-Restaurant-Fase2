@@ -256,76 +256,137 @@ footer {
 
 /* ||||||||||||||||||||||||||||||||| SELECTOR DE SALA ||||||||||||||||||||||||||||||| */
 
-
+/* Contenedor Principal: 3 columnas (Comedor, Terraza, Privada) */
 .contenedor-selector-sala {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  flex-grow: 1;
-  /* separa los botones de los márgenes izquierdo/derecho */
-  padding: 0 40px;
-  box-sizing: border-box;
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 20px;
+    flex-grow: 1;
+    padding: 20px 40px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
+/* Contenedor de cada tipo de Sala */
+.contenedor-sala {
+    display: flex;
+    flex-direction: column; /* Apila el título y el grid de botones */
+    gap: 15px; 
+    flex: 1; /* Ocupa un tercio del espacio disponible */
+    min-width: 300px;
+}
+
+.contenedor-sala h1 {
+    text-align: center;
+    color: #fff200;
+    margin: 0;
+    border-bottom: 2px solid #fff200;
+    padding-bottom: 5px;
+}
+
+/* Contenedor de los botones*/
+.salas-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Permite que los botones salten de fila */
+    justify-content: space-between; /* Distribuye los botones para que queden 2 por fila */
+    gap: 15px; /* Espacio vertical entre las filas */
+    width: 100%;
+}
+
+/* Estilo de los Botones de Sala */
 .boton-sala {
-  /* background-color: #ccc; */
-  width: 33%;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  text-decoration: none;
+    width: calc(50% - 8px); /* 2 por fila, gap incluido */
+    height: 140px; 
+    min-width: 130px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    
+    /* Estilos de Fondo e Imagen */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; /* La imagen de fondo cubre toda la caja */
+    background-color: rgba(58, 58, 58, 0.9); /* Color de fallback/base */
+    
+    /* Estilos de Texto */
+    color: white; 
+    font-weight: bold;
+    font-size: 1.1em;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9); /* Sombra de texto fuerte para visibilidad */
+    padding: 10px;
+    box-sizing: border-box;
 }
 
+
+/* Estilos Específicos de Color y Hover (manteniendo la propiedad cover) */
 #boton-comedor {
-  /* background-color: #ff0000; */
-  background-image: url(./../img/Logo_Comedor.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+    /* Puedes poner una imagen de fondo o un color fuerte */
+    background-image: url(./../img/Logo_Comedor.png); 
+    background-color: #ff3333; /* Rojo */
 }
-
 #boton-comedor:hover {
-  box-shadow: 0px 0px 50px 1px rgba(255, 0, 0, 0.8);
+    box-shadow: 0px 0px 30px 5px rgba(255, 51, 51, 0.9);
+    transform: scale(1.05);
 }
 
 #boton-terraza {
-  /* background-color: #53d56dff; */
-  background-image: url(./../img/Logo_Terraza.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+    background-image: url(./../img/Logo_Terraza.png);
+    background-color: #33cc33; /* Verde */
 }
-
 #boton-terraza:hover {
-  box-shadow: 0px 0px 50px 1px rgba(0, 255, 0, 0.8);
+    box-shadow: 0px 0px 30px 5px rgba(51, 204, 51, 0.9);
+    transform: scale(1.05);
 }
+
 #boton-sala-privada {
-  /* background-color: #fff200; */
-  background-image: url(./../img/Logo_SalaPrivada.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+    background-image: url(./../img/Logo_SalaPrivada.png);
+    background-color: #fff200; /* Amarillo */
 }
-
 #boton-sala-privada:hover {
-  box-shadow: 0px 0px 50px 1px rgba(255, 255, 0, 0.8);
+    box-shadow: 0px 0px 30px 5px rgba(255, 242, 0, 0.9);
+    transform: scale(1.05);
 }
 
-.boton-sala:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+
+/* =======================
+      ESTILOS RESPONSIVE (Aseguramos 1 columna principal en móvil)
+   ======================= */
+
+@media (max-width: 1024px) {
+    .contenedor-selector-sala {
+        /* Pasa a una sola columna principal para que las categorías se apilen */
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    
+    .contenedor-sala {
+        width: 90%;
+        max-width: 600px;
+    }
+
+    /* Mantenemos 2 botones por fila en pantallas medianas y móviles */
+    .salas-grid {
+        justify-content: space-between;
+    }
 }
 
-.boton-sala img {
-  width: 70px;
-  height: 70px;
+@media (max-width: 480px) {
+    .boton-sala {
+        width: 100%; /* Un solo botón por fila en móviles muy pequeños para más espacio vertical */
+        height: 100px;
+    }
 }
-
 
 /* ||||||||||||||||||||||||||||||||||| PAGINA DE REGISTRO ||||||||||||||||||||||||||||||||||||| */
 
