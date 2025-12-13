@@ -37,16 +37,4 @@ if (isset($_POST['eliminar_mesa']) && isset($_POST['idMesa'])) {
     header('Location: crud_recursos.php');
     exit;
 }
-// // Editar sala (redirige a editar_sala.php)
-// if (isset($_POST['editar_sala']) && isset($_POST['idSala'])) {
-//     $id = intval($_POST['idSala']);
-//     header('Location: editar_sala.php?idSala=' . $id);
-//     exit;
-// }
-// // Editar mesa (redirige a editar_mesa.php)
-// if (isset($_POST['editar_mesa']) && isset($_POST['idMesa'])) {
-//     $id = intval($_POST['idMesa']);
-//     header('Location: editar_mesa.php?idMesa=' . $id);
-//     exit;
-// }
 ?>

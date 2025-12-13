@@ -6,13 +6,12 @@ if (!isset($_SESSION['username'])) {
 }
 require_once './../database/conexion.php';
 
-// Obtener el id de la mesa a editar
-if (!isset($_GET['idMesa'])) {
-    header('Location: ./../pages/crud_recursos.php');
+// Obtener el id de la mesa a editar por POST
+if (!isset($_POST['idMesa']) || !is_numeric($_POST['idMesa']) || $_POST['idMesa'] <= 0) {
+    echo '<p>ID de mesa no válido.<br><a href="../pages/crud_recursos.php">Volver</a></p>';
     exit;
 }
-
-$idMesa = intval($_GET['idMesa']);
+$idMesa = intval($_POST['idMesa']);
 // Obtener datos actuales de la mesa
 $stmt = $conn->prepare('SELECT nombre, idSala, numSillas, estado FROM mesa WHERE idMesa = ?
 ');
@@ -25,14 +24,27 @@ if (!$mesa) {
 }
 
 // Si se envía el formulario, actualizar mesa
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actualizar_mesa'])) {
-    $nombre = $_POST['nombre'];
-    $idSala = intval($_POST['idSala']);
-    $numSillas = intval($_POST['numSillas']);
-    $estado = $_POST['estado'];
-    $stmt = $conn->prepare('UPDATE mesa SET nombre=?, idSala=?, numSillas=?, estado=? WHERE idMesa=?');
-    $stmt->execute([$nombre, $idSala, $numSillas, $estado, $idMesa]);
-    header('Location: crud_recursos.php');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre = $_POST['nombre'] ?? '';
+    $idSala = isset($_POST['idSala']) ? intval($_POST['idSala']) : 0;
+    $numSillas = isset($_POST['numSillas']) ? intval($_POST['numSillas']) : 0;
+    $estado = $_POST['estado'] ?? '';
+    try {
+        $stmt = $conn->prepare('UPDATE mesa SET nombre=?, idSala=?, numSillas=?, estado=? WHERE idMesa=?');
+        $stmt->execute([$nombre, $idSala, $numSillas, $estado, $idMesa]);
+        if ($stmt->rowCount() > 0) {
+            header('Location: ../pages/crud_recursos.php?edit=ok');
+            exit;
+        } else {
+            echo '<p>No se realizaron cambios o mesa no encontrada.<br><a href="../pages/crud_recursos.php">Volver</a></p>';
+            exit;
+        }
+    } catch (PDOException $e) {
+        echo '<p>Error al actualizar: ' . htmlspecialchars($e->getMessage()) . '<br><a href="../pages/crud_recursos.php">Volver</a></p>';
+        exit;
+    }
+} else {
+    echo '<p>Acceso no permitido.<br><a href="../pages/crud_recursos.php">Volver</a></p>';
     exit;
 }
 

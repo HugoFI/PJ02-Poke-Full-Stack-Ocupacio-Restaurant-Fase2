@@ -13,7 +13,7 @@ if (!isset($_GET['idUsuario'])) {
 }
 $idUsuario = intval($_GET['idUsuario']);
 // Obtener datos actuales del usuario
-$stmt = $conn->prepare('SELECT nombre, apellidos, nombreUsu, dni, telefono, email, fechaContratacion, rol FROM usuarios WHERE idUsuario = ?');
+$stmt = $conn->prepare('SELECT nombre, apellidos, nombreUsu, dni, telefono, email, fechaContratacion, rol, estado FROM usuarios WHERE idUsuario = ?');
 $stmt->execute([$idUsuario]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$usuario) {
@@ -34,10 +34,11 @@ if (!$usuario) {
     <header>
 		<span>Pokéfull Stack | <?php echo $_SESSION['username'];?></span>
 		<h2>Gestión de Usuarios</h2>
-		<a href="./selecciona_sala.php" class="btn-cerrar">Volver</a>
+		<a href="./crud_usuarios.php" class="btn-cerrar">Volver</a>
 	</header>
     <h1>Editar Usuario</h1>
     <form action="./../processes/procesar_editar_usuario.php" id="editar-elemento" method="post">
+        <input type="hidden" name="idUsuario" value="<?= $idUsuario ?>">
         <label>Nombre:</label>
         <input type="text" name="nombre" value="<?= htmlspecialchars($usuario['nombre']) ?>"><br>
         <label>Apellidos:</label>
@@ -58,6 +59,10 @@ if (!$usuario) {
             <option value="gerente" <?= $usuario['rol']==='gerente'?'selected':'' ?>>Gerente</option>
             <option value="mantenimiento" <?= $usuario['rol']==='mantenimiento'?'selected':'' ?>>Mantenimiento</option>
             <option value="camarero" <?= $usuario['rol']==='camarero'?'selected':'' ?>>Camarero</option>
+        </select><br>
+        <select name="estado">
+            <option value="activo" <?= $usuario['estado']==='activo'?'selected':'' ?>>Activo</option>
+            <option value="baja" <?= $usuario['estado']==='baja'?'selected':'' ?>>Baja</option>
         </select><br>
         <button type="submit" name="actualizar_usuario">Guardar cambios</button>
         <a href="crud_usuarios.php">Cancelar</a>

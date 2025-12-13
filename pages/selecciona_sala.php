@@ -47,13 +47,17 @@ if ($salas && is_array($salas)) {
       <div class="logo-header">
           <img src="../img/Logo_Pokefull.png" alt="logo" class="logo">
       </div>
+      <?php echo $_SESSION['username'];?>
     </div>
 
-    <a class="btn-cerrar" href="./crud_recursos.php">Gestión de Recursos</a>
+    <div>
+      <a class="btn-cerrar" href="./crud_recursos.php">Gestión de Recursos</a>
+      <a class="btn-cerrar" href="./crud_usuarios.php">Gestión de Usuarios</a>
+    </div>
 
-    <span><h2>Pokéfull Stack | <?php echo $_SESSION['username'];?></h2></span>
+    <span><h2>Pokéfull Stack</h2></span>
     
-    <a class="btn-cerrar" href="./crud_usuarios.php">Gestión de Usuarios</a>
+    <a class="btn-cerrar" href="./reserva.php">Crear reserva</a>
 
     <form id="cerrar-sesion" action="./../processes/logout.php" method="post">
       <button type="submit" class="btn-cerrar">Cerrar sesión</button>

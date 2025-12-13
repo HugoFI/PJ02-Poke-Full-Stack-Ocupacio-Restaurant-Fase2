@@ -2,7 +2,7 @@
 require_once '../database/conexion.php';
 
 // Obtener todos los usuarios
-$stmt = $conn->prepare('SELECT idUsuario, nombre, apellidos, nombreUsu, dni, telefono, email, fechaContratacion, rol FROM usuarios');
+$stmt = $conn->prepare('SELECT idUsuario, nombre, apellidos, nombreUsu, dni, telefono, email, fechaContratacion, rol, estado FROM usuarios');
 $stmt->execute();
 $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -34,7 +34,9 @@ require_once '../processes/procesar_crud_usuarios.php';
 						<th>DNI</th>
 						<th>Teléfono</th>
 						<th>Email</th>
+						<th>Fecha Contratación</th>
 						<th>Rol</th>
+						<th>Estado</th>
 						<th>Acciones</th>
 					</tr>
 				</thead>
@@ -48,7 +50,9 @@ require_once '../processes/procesar_crud_usuarios.php';
 						<td><?= htmlspecialchars($u['dni']) ?></td>
 						<td><?= htmlspecialchars($u['telefono']) ?></td>
 						<td><?= htmlspecialchars($u['email']) ?></td>
+						<td><?= htmlspecialchars($u['fechaContratacion']) ?></td>
 						<td><?= htmlspecialchars($u['rol']) ?></td>
+						<td><?= htmlspecialchars($u['estado']) ?></td>
 						<td>
 							<div class="crud-actions">
 								<form method="post">

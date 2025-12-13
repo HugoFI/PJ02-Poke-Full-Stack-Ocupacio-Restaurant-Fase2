@@ -13,6 +13,7 @@ CREATE TABLE usuarios(
     email VARCHAR(60) NOT NULL,
     fechaContratacion DATE NOT NULL,
     rol ENUM('admin','gerente', 'mantenimiento','camarero') NOT NULL,
+    estado ENUM('activo','baja') NOT NULL DEFAULT 'activo',
     password VARCHAR(60) NOT NULL
 ) ENGINE=InnoDB;
 
@@ -44,7 +45,11 @@ CREATE TABLE reservas(
     idMesa INT NOT NULL,
     idSala INT NOT NULL,
     idUsuario INT NOT NULL,
-    fechaHoraReserva DATETIME NOT NULL,
+    nombreCliente VARCHAR(60) NOT NULL,
+    telefonoCliente VARCHAR(10) NOT NULL,
+    fechaReserva DATETIME NOT NULL,
+    horaInicio DATETIME NOT NULL,
+    horaFin DATETIME NOT NULL,
     numPersonas INT NOT NULL
 ) ENGINE=InnoDB;
 
@@ -63,6 +68,19 @@ foreign key (idSala) references sala(idSala);
 alter table mesa
 add constraint fk_sala_mesa 
 foreign key (idSala) references sala(idSala);
+
+
+ALTER TABLE reservas
+ADD CONSTRAINT fk_reserva_mesa
+FOREIGN KEY (idMesa) REFERENCES mesa(idMesa);
+
+ALTER TABLE reservas
+ADD CONSTRAINT fk_reserva_sala
+FOREIGN KEY (idSala) REFERENCES sala(idSala);
+
+ALTER TABLE reservas
+ADD CONSTRAINT fk_reserva_usuario
+FOREIGN KEY (idUsuario) REFERENCES usuarios(idUsuario);
 
 
 insert into sala (nombre, tipo) values("sinnoh", "comedor");
@@ -164,3 +182,37 @@ insert into mesa (nombre, numSillas, estado, idSala) values("FRAGUA", 3, "libre"
 insert into mesa (nombre, numSillas, estado, idSala) values("NAPADA", 4, "libre", 9);
 insert into mesa (nombre, numSillas, estado, idSala) values("MEDALI", 4, "libre", 9);
 insert into mesa (nombre, numSillas, estado, idSala) values("ALMIZCLE", 2, "libre", 9);
+
+
+-- INSERCION DE USUARIOS
+INSERT INTO usuarios (nombre, apellidos, nombreUsu, dni, telefono, email, fechaContratacion, rol, estado, password)
+VALUES
+('admin', 'Admin Apellido', 'admin', '00000001A', '600000001', 'admin@poke.com', '2024-01-01', 'admin', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu'),
+('gerente', 'Gerente Apellido', 'gerente', '00000002B', '600000002', 'gerente@poke.com', '2024-01-02', 'gerente', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu'),
+('mantenimiento', 'Mantenimiento Apellido', 'mantenimiento', '00000003C', '600000003', 'mantenimiento@poke.com', '2024-01-03', 'mantenimiento', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu'),
+('camarero', 'Camarero Apellido', 'camarero', '00000004D', '600000004', 'camarero@poke.com', '2024-01-04', 'camarero', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu');
+
+-- 2 usuarios más de cada rol
+-- Admin
+INSERT INTO usuarios (nombre, apellidos, nombreUsu, dni, telefono, email, fechaContratacion, rol, estado, password)
+VALUES
+('Ana', 'Administra', 'anaadmin', '00000005E', '600000005', 'ana.admin@poke.com', '2024-02-01', 'admin', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu'),
+('Pedro', 'Administrador', 'pedroadmin', '00000006F', '600000006', 'pedro.admin@poke.com', '2024-02-02', 'admin', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu');
+
+-- Gerente
+INSERT INTO usuarios (nombre, apellidos, nombreUsu, dni, telefono, email, fechaContratacion, rol, estado, password)
+VALUES
+('Laura', 'Gerencia', 'lauragerente', '00000007G', '600000007', 'laura.gerente@poke.com', '2024-03-01', 'gerente', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu'),
+('Carlos', 'Gerentez', 'carlosgerente', '00000008H', '600000008', 'carlos.gerente@poke.com', '2024-03-02', 'gerente', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu');
+
+-- Mantenimiento
+INSERT INTO usuarios (nombre, apellidos, nombreUsu, dni, telefono, email, fechaContratacion, rol, estado, password)
+VALUES
+('Mario', 'Mantenido', 'mariomant', '00000009I', '600000009', 'mario.mant@poke.com', '2024-04-01', 'mantenimiento', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu'),
+('Sara', 'Mantenedora', 'saramant', '00000010J', '600000010', 'sara.mant@poke.com', '2024-04-02', 'mantenimiento', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu');
+
+-- Camarero
+INSERT INTO usuarios (nombre, apellidos, nombreUsu, dni, telefono, email, fechaContratacion, rol, estado, password)
+VALUES
+('Lucía', 'Camarera', 'luciacama', '00000011K', '600000011', 'lucia.cama@poke.com', '2024-05-01', 'camarero', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu'),
+('David', 'Camareroz', 'davidcama', '00000012L', '600000012', 'david.cama@poke.com', '2024-05-02', 'camarero', 'activo', '$2y$10$3A.7Kt7W7ANBM5WMli5O/e1taIwMQaGLM3MKYWMbMC0CzoKmGr5iu');

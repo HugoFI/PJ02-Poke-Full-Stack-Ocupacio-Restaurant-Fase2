@@ -1,33 +1,42 @@
 <?php
+
 require_once '../database/conexion.php';
 
-// Obtener el id del usuario a editar
-$idUsuario = isset($_POST['idUsuario']) ? intval($_POST['idUsuario']) : 0;
 
-// Si se envía el formulario, actualizar usuario
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actualizar_usuario'])) {
-    $nombre = $_POST['nombre'];
-    $apellidos = $_POST['apellidos'];
-    $nombreUsu = $_POST['nombreUsu'];
-    $dni = $_POST['dni'];
-    $telefono = $_POST['telefono'];
-    $email = $_POST['email'];
-    $fechaContratacion = $_POST['fechaContratacion'];
-    $rol = $_POST['rol'];
-    // No se actualiza la contraseña aquí
-
-    $stmt = $conn->prepare('UPDATE usuarios SET nombre=?, apellidos=?, nombreUsu=?, dni=?, telefono=?, email=?, fechaContratacion=?, rol=? WHERE idUsuario=?');
-    $stmt->execute([$nombre, $apellidos, $nombreUsu, $dni, $telefono, $email, $fechaContratacion, $rol, $idUsuario]);
-    header('Location: crud_usuarios.php');
+// Validar idUsuario
+if (!isset($_POST['idUsuario']) || !is_numeric($_POST['idUsuario']) || $_POST['idUsuario'] <= 0) {
+    echo '<p>ID de usuario no válido.<br><a href="../pages/crud_usuarios.php">Volver</a></p>';
     exit;
 }
+$idUsuario = intval($_POST['idUsuario']);
 
-// Obtener los datos actuales del usuario
-$stmt = $conn->prepare('SELECT * FROM usuarios WHERE idUsuario = ?');
-$stmt->execute([$idUsuario]);
-$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-if (!$usuario) {
-    echo '<p>Usuario no encontrado.</p>';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre = $_POST['nombre'] ?? '';
+    $apellidos = $_POST['apellidos'] ?? '';
+    $nombreUsu = $_POST['nombreUsu'] ?? '';
+    $dni = $_POST['dni'] ?? '';
+    $telefono = $_POST['telefono'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $fechaContratacion = $_POST['fechaContratacion'] ?? '';
+    $rol = $_POST['rol'] ?? '';
+    $estado = $_POST['estado'] ?? '';
+
+    try {
+        $stmt = $conn->prepare('UPDATE usuarios SET nombre=?, apellidos=?, nombreUsu=?, dni=?, telefono=?, email=?, fechaContratacion=?, rol=?, estado=? WHERE idUsuario=?');
+        $stmt->execute([$nombre, $apellidos, $nombreUsu, $dni, $telefono, $email, $fechaContratacion, $rol, $estado, $idUsuario]);
+        if ($stmt->rowCount() > 0) {
+            header('Location: ../pages/crud_usuarios.php?edit=ok');
+            exit;
+        } else {
+            echo '<p style="color:orange;text-align:center;">No se realizaron cambios o usuario no encontrado.<br><a href="../pages/crud_usuarios.php">Volver</a></p>';
+            exit;
+        }
+    } catch (PDOException $e) {
+        echo '<p>Error al actualizar: ' . htmlspecialchars($e->getMessage()) . '<br><a href="../pages/crud_usuarios.php">Volver</a></p>';
+        exit;
+    }
+} else {
+    echo '<p>Acceso no permitido.<br><a href="../pages/crud_usuarios.php">Volver</a></p>';
     exit;
 }
 ?>
